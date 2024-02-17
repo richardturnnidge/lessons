@@ -20,6 +20,14 @@ The source files here are to accompany my YouTube lesson videos.
 
 09 Random number creation
 
+10 Registers
+
+11 Printing Bitmaps
+
+12 Text Entry
+
+13 Slow Down!
+
 
 https://www.youtube.com/@AgonBits
 
