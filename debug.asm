@@ -1,6 +1,6 @@
 ; ---------------------------------------------
 ;
-;	DEBUG ROUTINE - Richard Turnnidge 2023
+;	DEBUG ROUTINES - Richard Turnnidge 2023
 ;
 ; ---------------------------------------------
 	
@@ -46,7 +46,47 @@ step3:
 originalA: 	.db 	0		; used to store A
 
 
+; ---------------------------------------------
 
+printBin:			; take A as number and put into binary, B,C as X,Y
+
+	push af 		; store A for a moment
+
+	ld a, 31		; TAB at x,y
+	rst.lil $10
+	ld a, b			; x=b
+	rst.lil $10
+	ld a,c			; y=c
+	rst.lil $10		; put tab at BC position
+
+	pop af 			; get original A back again
+
+	ld b, 8  		; number of bits to print
+	ld hl, binString
+rpt:
+	ld (hl), 48 		; ASCII 0 is 48, 1 is 49 ; reset first
+
+	bit 7, a
+	jr z, nxt
+	ld (hl), 49
+nxt:	
+	inc hl			; next position in string
+	rla 
+	djnz rpt
+
+	ld hl, printStr
+	ld bc, endPrintStr - printStr
+
+	rst.lil $18
+
+	ret
+
+
+printStr:			; data to send to VDP
+
+binString:	.db 	"00000000"
+
+endPrintStr:
 
 
 
