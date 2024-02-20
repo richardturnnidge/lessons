@@ -32,6 +32,8 @@ The source files here are to accompany my YouTube lesson videos.
 
 15 Graphic Viewport
 
+16 Sprites
+
 
 https://www.youtube.com/@AgonBits
 
