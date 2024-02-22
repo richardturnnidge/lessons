@@ -34,6 +34,8 @@ The source files here are to accompany my YouTube lesson videos.
 
 16 Sprites
 
+17 Using the Mouse
+
 
 https://www.youtube.com/@AgonBits
 
