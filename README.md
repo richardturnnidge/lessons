@@ -44,6 +44,8 @@ The source files here are to accompany my YouTube lesson videos.
 
 21 Playing Sounds
 
+22 Reading a Directory Listing
+
 
 https://www.youtube.com/@AgonBits
 
