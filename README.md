@@ -46,6 +46,8 @@ The source files here are to accompany my YouTube lesson videos.
 
 22 Reading a Directory Listing
 
+23 USB Debugging & Conditional Assembly
+
 
 https://www.youtube.com/@AgonBits
 
