@@ -50,6 +50,7 @@ The source files here are to accompany my YouTube lesson videos.
 
 24 Font API
 
+25 Rotary Encoder
 
 https://www.youtube.com/@AgonBits
 
