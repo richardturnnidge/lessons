@@ -3,8 +3,10 @@
 	; Richard Turnnidge 2024
 	; State machine version
 
-	; assumumption that rotary encoder is attached to 
+	; Assumumption that rotary encoder is attached to 
 	; port C, bits 0 & 1
+	; This could be improved for better efficiency, however
+	; it has been written for better understanding of state order
 
 	.assume adl=1		; big memory mode
 	.org $40000		; load code here
@@ -33,13 +35,12 @@
 	rst.lil $10
 	endmacro
 
-	include "delay_routines.asm"
-
 	; constants for pin states
+	; these are the binary values of the pins being used
 
-CLK_pin:	equ 1
-DT_pin:		equ 2
-both_pins:	equ 3
+CLK_pin:	equ 00000001b
+DT_pin:		equ 00000010b
+both_pins:	equ 00000011b
 
 start_here:
 
@@ -85,7 +86,7 @@ check_encoder:
 	ld a,0				; set A to 0
 	or a 				; clear flags
 	in a, ($9e)			; grab current io value of port C
-	and 00000011b			; mask just last 2 bits
+	and 00000011b			; mask just last 2 bits, pins 0 and 1 are used for the encoder
 	ld (pin_reading), a  		; store current reading
 
 	and CLK_pin			; get CLK pin status
@@ -131,7 +132,7 @@ state_0:				; default start state
 	cp CLK_pin
 	jr z, state_0_1			; if CLK goes low
 
-	ld a, 1  			; set state to 1
+	ld a, 1  			; else set state to 1
 	ld (state),a 
 	jp MAIN_LOOP
 
@@ -141,7 +142,7 @@ state_0_1:
 	cp DT_pin
 	jp z, MAIN_LOOP			; if DT goes low
 
-	ld a, 4 			; set state to 4
+	ld a, 4 			; then set state to 4
 	ld (state),a 
 
 	jp MAIN_LOOP
@@ -150,7 +151,7 @@ state_0_1:
 ; ---------------------------------------------
 state_1:
 
-	ld a, (DT_state)
+	ld a, (DT_state)		; CLK went low, now check DT
 	cp DT_pin
 	jp z, MAIN_LOOP			; if DT goes high
 
@@ -162,7 +163,7 @@ state_1:
 ; ---------------------------------------------
 state_2:
 
-	ld a, (CLK_state)
+	ld a, (CLK_state)		; check if CLK has now gone high
 	cp CLK_pin
 	jp nz, MAIN_LOOP		; if CLK is low
 
@@ -176,7 +177,7 @@ state_2:
 state_3:
 
 	ld a, (pin_reading)
-	cp both_pins
+	cp both_pins			; are they both high?
 	jp nz, MAIN_LOOP		; not both
 
 	; completed one step in clockwise direction
@@ -194,7 +195,7 @@ state_3:
 ; ---------------------------------------------
 state_4:
 
-	ld a, (CLK_state)
+	ld a, (CLK_state)		; DT went low, next check if CLK goes low
 	cp CLK_pin
 	jp z, MAIN_LOOP			; if CLK is high
 
@@ -208,7 +209,7 @@ state_4:
 ; ---------------------------------------------
 state_5:
 
-	ld a, (DT_state)
+	ld a, (DT_state)		; CLK went low, next check if DT goes high
 	cp DT_pin
 	jp nz, MAIN_LOOP		; if DT goes low
 
@@ -244,8 +245,8 @@ state_6:
 
 updateValue:
 
-	TAB_TO 15,3
-	ld a, (encoder_value)
+	TAB_TO 15,3			; set cursor position
+	ld a, (encoder_value)		; get current value of the encoder
 	call debugDec			; print out current reading in decimal
 
 	ret
@@ -277,10 +278,12 @@ exit_here:
 ; ---------------------------------------------
 
 setupIO:
-	; this is all based on my reading of the eZ80 user manual. It might not all be needed.
-	; default should be that all pins are treated as inputs.
+	; This is all based on my reading of the eZ80 user manual. It might not all be needed.
+	; The default should be that all pins are treated as inputs. However, there may 
+	; be other applications which have used the io ports before us.
 
-	; port C
+	; port C confugration for inputs
+
 	ld a, 0
 	out0 ($9e), a 		; set DR of all port C to 0 default - 158
 	ld a, $FF
@@ -291,8 +294,6 @@ setupIO:
 	out0 ($a1), a  		; set ALT2 of all port C to 0 - 161
 
 	ret 
-
-
 
 ; ---------------------------------------------
 ;
