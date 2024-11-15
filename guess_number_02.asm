@@ -219,9 +219,9 @@ getRandom10:
     call get_random_byte    ; get first byte
     rla
     rla
-    and 00000010b           ; just 0-1
+    and 00000001b           ; just 0-1
 
-    add a, b                   ; add first part to get nmber 0-9
+    add a, b                ; add first part to get nmber 0-9
     inc a                   ; inc so 1-10
 
     ret 
