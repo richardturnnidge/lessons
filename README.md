@@ -52,6 +52,10 @@ The source files here are to accompany my YouTube lesson videos.
 
 25 Rotary Encoder
 
+26 Interrupts - Programmable Reload Timer
+
+27 Interrupts - GPIO Pins
+
 https://www.youtube.com/@AgonBits
 
 If you find these video lessons useful, you could buy me a coffee:
