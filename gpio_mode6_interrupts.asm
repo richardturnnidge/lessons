@@ -145,13 +145,14 @@ exit_here:
 ; ---------------------------------------------
 ;
 ;	This example uses GPIO Interrupt mode 6 - level-sensitive interrupts
-;	
-;	Data Register (DR)					1 
-;	Data Direction Register (DDR) 		0
-;	Alt1 register (ALT1)				0
-;	Alt2 register (ALT2)				1
 ;
-;	We are only working with interrupts on GPIO pin PC0 in this example
+;	For each pin used, we set:-
+;		Data Register (DR)					1 
+;		Data Direction Register (DDR) 		0
+;		Alt1 register (ALT1)				0
+;		Alt2 register (ALT2)				1
+;
+;	We are only working with interrupts on GPIO pins PC0 and PC1 in this example
 ; 	It defines pins 0 & 1 as interrupt driven input, and pins 2-7 as outputs
 
 
@@ -160,16 +161,16 @@ setup_GPIO_ports:
 	di 						; stop any interrupts whle we configure
 
 	ld a, 00000011b 	
-	out0 (PC_DR), a 		; set DR of PC0 to 0 as we are first waiting for a LOW interrupt
+	out0 (PC_DR), a 		; set DR of PC0 and PC1 to 1
 
 	ld a, 00000000b
-	out0 (PC_DDR), a 		; set DDR of PC0 to 0 
+	out0 (PC_DDR), a 		; set DDR of register to 0 
 
 	ld a, 00000000b 
-	out0 (PC_ALT1), a  		; set ALT1 of PC0 to 1 
+	out0 (PC_ALT1), a  		; set ALT1 of register to 0
 
 	ld a, 00000011b 
-	out0 (PC_ALT2), a  		; set ALT2 of PC0 to 1
+	out0 (PC_ALT2), a  		; set ALT2 of PC0 and PC1 to 1
 
  	ei  					; re-enable the interrupts
 
