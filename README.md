@@ -56,6 +56,8 @@ The source files here are to accompany my YouTube lesson videos.
 
 27 Interrupts - GPIO Pins
 
+28 Interrupts - Serial UART
+
 https://www.youtube.com/@AgonBits
 
 If you find these video lessons useful, you could buy me a coffee:
