@@ -22,7 +22,7 @@ start_here:
 ; ------------------
                                         
 
-    ld hl, directoryPath                      ; where to store result
+    ld hl, directoryPath                ; where to store result
     ld bc, 255                          ; max length
     MOSCALL $9E                         ; MOS api get current working directory
 
@@ -92,7 +92,7 @@ printDirHeading:
 printCR:
     .db     "\r\n",0                                ; text to print
 
-directoryPath:    .ds     256,0                           ; 256 x 0 bytes allocated for path name
+directoryPath:    .BLKB     256,0                     ; 256 x 0 bytes allocated for path name
 
 ; ------------------
 ; Routine to print zero terminated string
@@ -109,22 +109,22 @@ printString:
 ; Structures used in the code above
 
 DIR_struct:             
-dptr:       .DS  4,0   ; Current read/write offset
-clust:      .DS  4,0   ; Current cluster
-sect:       .DS  4,0   ; Current sector (0:Read operation has terminated)
-dir:        .DS  3,0   ; Pointer to the directory item in the win[]
-fn:         .DS  12,0  ; SFN (in/out) {body[8],ext[3],status[1]}
-blk_ofs:    .DS  4,0   ; Offset of current entry block being processed (0xFFFFFFFF:Invalid)
+dptr:       .BLKB  4,0   ; Current read/write offset
+clust:      .BLKB  4,0   ; Current cluster
+sect:       .BLKB  4,0   ; Current sector (0:Read operation has terminated)
+dir:        .BLKB  3,0   ; Pointer to the directory item in the win[]
+fn:         .BLKB  12,0  ; SFN (in/out) {body[8],ext[3],status[1]}
+blk_ofs:    .BLKB  4,0   ; Offset of current entry block being processed (0xFFFFFFFF:Invalid)
 end_DIR_struct:
 
 
 FILINFO_struct:               
-fsize:      .DS  4,0   ; File size
-fdate:      .DS  2,0   ; Modified date
-ftime:      .DS  2,0   ; Modified time
-fattrib:    .DS  1,0   ; File attribute
-altname:    .DS  13,0  ; Alternative file name
-fname:      .DS  256,0 ; Primary file name
+fsize:      .BLKB  4,0   ; File size
+fdate:      .BLKB  2,0   ; Modified date
+ftime:      .BLKB  2,0   ; Modified time
+fattrib:    .BLKB  1,0   ; File attribute
+altname:    .BLKB  13,0  ; Alternative file name
+fname:      .BLKB  256,0 ; Primary file name
 end_FILINFO_struct:
 
 
